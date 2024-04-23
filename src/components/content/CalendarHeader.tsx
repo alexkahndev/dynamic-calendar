@@ -6,7 +6,14 @@ import {
 	dateHeaderStyle,
 	filterButtonStyle
 } from "../../styles/CalendarStyles";
-import { isLeapYear, monthData } from "../../utils/CalendarUtils";
+import {
+	decrementDay,
+	decrementMonth,
+	decrementWeek,
+	incrementDay,
+	incrementMonth,
+	incrementWeek,
+} from "../../utils/CalendarUtils";
 import { DateType, useDate } from "../../hooks/useDate";
 
 export const CalendarHeader = () => {
@@ -23,123 +30,23 @@ export const CalendarHeader = () => {
 		);
 	};
 
-	const incrementDay = () => {
-		setSelectedDate((prevDate) => {
-			const { day, month, year } = prevDate;
-
-			if (
-				day === undefined ||
-				month === undefined ||
-				year === undefined
-			) {
-				return prevDate;
-			}
-
-			const specialMonth = month === 1 && isLeapYear(year);
-			const daysInMonth = specialMonth
-				? monthData[month].leapYearDays!
-				: monthData[month].days;
-
-			if (day < daysInMonth) {
-				return { day: day + 1, month, year };
-			} else {
-				if (month < 11) {
-					return { day: 1, month: month + 1, year };
-				} else {
-					return { day: 1, month: 0, year: year + 1 };
-				}
-			}
-		});
-	};
-
-	const decrementDay = () => {
-		setSelectedDate((prevDate) => {
-			const { day, month, year } = prevDate;
-
-			if (
-				day === undefined ||
-				month === undefined ||
-				year === undefined
-			) {
-				return prevDate;
-			}
-
-			const specialMonth = month === 1 && isLeapYear(year);
-			const daysInMonth = specialMonth
-				? monthData[month].leapYearDays!
-				: monthData[month].days;
-
-			if (day > 1) {
-				return { day: day - 1, month, year };
-			} else {
-				if (month > 0) {
-					return { day: daysInMonth, month: month - 1, year };
-				} else {
-					return { day: 31, month: 11, year: year - 1 };
-				}
-			}
-		});
-	};
-
-	const incrementMonth = () => {
-		setSelectedDate((prevDate) => {
-			const { day, month, year } = prevDate;
-
-			if (
-				day === undefined ||
-				month === undefined ||
-				year === undefined
-			) {
-				return prevDate;
-			}
-
-			if (month < 11) {
-				return { day: 1, month: month + 1, year };
-			} else {
-				return { day: 1, month: 0, year: year + 1 };
-			}
-		});
-	};
-
-	const decrementMonth = () => {
-		setSelectedDate((prevDate) => {
-			const { day, month, year } = prevDate;
-
-			if (
-				day === undefined ||
-				month === undefined ||
-				year === undefined
-			) {
-				return prevDate;
-			}
-
-			if (month > 0) {
-				return {
-					day: monthData[month - 1].days,
-					month: month - 1,
-					year
-				};
-			} else {
-				return { day: monthData[11].days, month: 11, year: year - 1 };
-			}
-		});
-	};
-
 	const handleArrowUpClick = () => {
 		if (clickedStates[0]) {
-			incrementDay();
+			incrementDay(setSelectedDate);
 		} else if (clickedStates[1]) {
+      incrementWeek(setSelectedDate);
 		} else {
-			incrementMonth();
+			incrementMonth(setSelectedDate);
 		}
 	};
 
 	const handleArrowDownClick = () => {
 		if (clickedStates[0]) {
-			decrementDay();
+			decrementDay(setSelectedDate);
 		} else if (clickedStates[1]) {
+      decrementWeek(setSelectedDate);
 		} else {
-			decrementMonth();
+			decrementMonth(setSelectedDate);
 		}
 	};
 
