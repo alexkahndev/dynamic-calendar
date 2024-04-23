@@ -1,16 +1,16 @@
 import { ReactNode } from "react";
 
 export const Accordion = ({
-  summary,
-  children,
+	summary,
+	children
 }: {
-  summary: string;
-  children?: ReactNode;
+	summary: string;
+	children?: ReactNode;
 }) => {
-  return (
-    <details className="Accordion">
-      <summary>{summary}</summary>
-      <section>{children}</section>
-    </details>
-  );
+	return (
+		<details className="Accordion">
+			<summary>{summary}</summary>
+			<section>{children}</section>
+		</details>
+	);
 };
