@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 import {
 	arrowButtonStyle,
 	buttonGroupStyle,
@@ -13,12 +13,17 @@ import {
 	incrementDay,
 	incrementMonth,
 	incrementWeek,
+  monthData
 } from "../../utils/CalendarUtils";
 import { DateType, useDate } from "../../hooks/useDate";
 
-export const CalendarHeader = () => {
+type CalendarHeaderProps = {
+  clickedStates: boolean[];
+  setClickedStates: Dispatch<SetStateAction<boolean[]>>;
+};
+export const CalendarHeader = ({clickedStates,setClickedStates}: CalendarHeaderProps) => {
 	const [hoverStates, setHoverStates] = useState(Array(5).fill(false));
-	const [clickedStates, setClickedStates] = useState(Array(3).fill(false));
+	
 
 	const currentDate = useDate();
 
@@ -34,7 +39,7 @@ export const CalendarHeader = () => {
 		if (clickedStates[0]) {
 			incrementDay(setSelectedDate);
 		} else if (clickedStates[1]) {
-      incrementWeek(setSelectedDate);
+			incrementWeek(setSelectedDate);
 		} else {
 			incrementMonth(setSelectedDate);
 		}
@@ -44,7 +49,7 @@ export const CalendarHeader = () => {
 		if (clickedStates[0]) {
 			decrementDay(setSelectedDate);
 		} else if (clickedStates[1]) {
-      decrementWeek(setSelectedDate);
+			decrementWeek(setSelectedDate);
 		} else {
 			decrementMonth(setSelectedDate);
 		}
@@ -75,9 +80,19 @@ export const CalendarHeader = () => {
 					</button>
 				))}
 			</div>
-			<h2
-				style={dateHeaderStyle}
-			>{`${selectedDate.month! + 1}/${selectedDate.day}/${selectedDate.year}`}</h2>
+      {clickedStates[0] ? (
+        <h2
+          style={dateHeaderStyle}
+        >{`${monthData[selectedDate.month!].name} ${selectedDate.day}, ${selectedDate.year}`}</h2>
+      ) : clickedStates[1] ? (
+        <h2
+          style={dateHeaderStyle}
+        >{`${monthData[selectedDate.month!].name} ${selectedDate.day} - ${selectedDate.day! + 6}, ${selectedDate.year}`}</h2>
+      ) : (
+        <h2
+          style={dateHeaderStyle}
+        >{`${monthData[selectedDate.month!].name} ${selectedDate.year}`}</h2>
+      )}
 
 			<div style={buttonGroupStyle}>
 				{["Day", "Week", "Month"].map((label, index) => (

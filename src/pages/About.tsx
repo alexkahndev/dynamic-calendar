@@ -1,7 +1,10 @@
+import { useState } from "react";
 import { CalendarHeader } from "../components/content/CalendarHeader";
+import { CalendarContent } from "../components/content/CalendarContent";
 import { CalendarNavbar } from "../components/utils/CalendarNavbar";
 
 const About = () => {
+	const [clickedStates, setClickedStates] = useState(Array(3).fill(false));
 	return (
 		<html>
 			<head>
@@ -25,16 +28,8 @@ const About = () => {
 						alignItems: "center"
 					}}
 				>
-					<CalendarHeader />
-					<div
-						style={{
-							backgroundColor: "red",
-							borderColor: "black",
-							borderStyle: "solid",
-							height: "82.5%",
-							width: "95%"
-						}}
-					></div>
+					<CalendarHeader  clickedStates={clickedStates} setClickedStates={setClickedStates} />
+					<CalendarContent clickedStates={clickedStates} />
 				</main>
 			</body>
 		</html>
