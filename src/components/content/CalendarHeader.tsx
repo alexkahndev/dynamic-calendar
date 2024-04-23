@@ -61,6 +61,17 @@ export const CalendarHeader = ({clickedStates,setClickedStates}: CalendarHeaderP
 		);
 	};
 
+  const handleWeekDisplay = () => {
+    const endDate = new Date(selectedDate.year!, selectedDate.month!, selectedDate.day!);
+    endDate.setDate(endDate.getDate() + 6);
+    
+    if (selectedDate.month! === endDate.getMonth()) {
+      return `${monthData[selectedDate.month!].name} ${selectedDate.day} - ${endDate.getDate()}, ${selectedDate.year}`;
+    } else {
+      return `${monthData[selectedDate.month!].name} ${selectedDate.day} - ${monthData[endDate.getMonth()].name} ${endDate.getDate()}, ${selectedDate.year}`;
+    }
+  };
+
 	return (
 		<div style={containerStyle}>
 			<div style={buttonGroupStyle}>
@@ -80,19 +91,13 @@ export const CalendarHeader = ({clickedStates,setClickedStates}: CalendarHeaderP
 					</button>
 				))}
 			</div>
-      {clickedStates[0] ? (
-        <h2
-          style={dateHeaderStyle}
-        >{`${monthData[selectedDate.month!].name} ${selectedDate.day}, ${selectedDate.year}`}</h2>
-      ) : clickedStates[1] ? (
-        <h2
-          style={dateHeaderStyle}
-        >{`${monthData[selectedDate.month!].name} ${selectedDate.day} - ${selectedDate.day! + 6}, ${selectedDate.year}`}</h2>
-      ) : (
-        <h2
-          style={dateHeaderStyle}
-        >{`${monthData[selectedDate.month!].name} ${selectedDate.year}`}</h2>
-      )}
+     {clickedStates[0] ? (
+  <h2 style={dateHeaderStyle}>{`${monthData[selectedDate.month!].name} ${selectedDate.day}, ${selectedDate.year}`}</h2>
+) : clickedStates[1] ? (
+  <h2 style={dateHeaderStyle}>{handleWeekDisplay()}</h2>
+) : (
+  <h2 style={dateHeaderStyle}>{`${monthData[selectedDate.month!].name} ${selectedDate.year}`}</h2>
+)}
 
 			<div style={buttonGroupStyle}>
 				{["Day", "Week", "Month"].map((label, index) => (
