@@ -24,10 +24,11 @@ export const Calendar = ({
 		day: currentDate.day
 	});
 
-	useEffect(()=>{
-
-		console.log("Calendar.tsx: start: " + dateRange.start + " end: " + dateRange.end)
-	},[dateRange])
+	useEffect(() => {
+		console.log(
+			"Calendar.tsx: start: " + dateRange.start + " end: " + dateRange.end
+		);
+	}, [dateRange]);
 
 	return (
 		<div
@@ -53,8 +54,9 @@ export const Calendar = ({
 				filtersClicked={filtersClicked}
 				daysInCurrentRange={daysInCurrentRange}
 				dateRange={dateRange}
+				currentDate={currentDate}
+				selectedDate={selectedDate}
 			/>
-			
 		</div>
 	);
 };

@@ -1,9 +1,13 @@
+import { DateType } from "../../hooks/useDate";
+import { monthData } from "../../utils/CalendarUtils";
 import { DateRange } from "../utils/CalendarNavbar";
 
 type CalendarContentProps = {
 	filtersClicked: boolean[];
 	dateRange: DateRange;
 	daysInCurrentRange: number;
+	currentDate: DateType;
+	selectedDate: DateType;
 };
 
 const daysOfWeek = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
@@ -11,7 +15,9 @@ const daysOfWeek = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 export const CalendarContent = ({
 	filtersClicked,
 	dateRange,
-	daysInCurrentRange
+	selectedDate,
+	daysInCurrentRange,
+	currentDate
 }: CalendarContentProps) => {
 	const getCalendarSettings = () => {
 		let squares, columns, rows;
@@ -41,7 +47,6 @@ export const CalendarContent = ({
 
 	const { squares, columns, rows } = getCalendarSettings();
 
-	
 	return (
 		<div style={{ height: "100%", width: "100%" }}>
 			<div
@@ -58,9 +63,7 @@ export const CalendarContent = ({
 					marginBottom: "0.1rem"
 				}}
 			>
-				{filtersClicked[1] ? (
-					<div style={{ border: "2px solid black" }}>test-number</div>
-				) : (
+				{!(filtersClicked[1] && selectedDate.month) &&
 					daysOfWeek.map((day, index) => (
 						<div
 							key={index}
@@ -70,8 +73,7 @@ export const CalendarContent = ({
 						>
 							{day}
 						</div>
-					))
-				)}
+					))}
 			</div>
 			<div
 				style={{
