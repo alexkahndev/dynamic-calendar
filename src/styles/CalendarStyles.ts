@@ -37,9 +37,12 @@ export const containerStyle = {
 	display: "grid",
 	gridTemplateColumns: "1fr 1fr 1fr",
 	alignItems: "center",
+	justifyContent: "center",
+	alignContent: "center",
 	backgroundColor: "#ECF0F1",
 	borderColor: "black",
 	borderStyle: "solid",
+	borderWidth: "2px 2px 0 2px", // top, right, bottom, left
 	height: "12.5%",
 	width: "95%",
 	padding: "0 10px"

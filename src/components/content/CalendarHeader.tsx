@@ -3,7 +3,6 @@ import {
 	arrowButtonStyle,
 	buttonGroupStyle,
 	containerStyle,
-	dateHeaderStyle,
 	filterButtonStyle
 } from "../../styles/CalendarStyles";
 import {
@@ -12,20 +11,22 @@ import {
 	decrementWeek,
 	incrementDay,
 	incrementMonth,
-	incrementWeek,
-  monthData
+	incrementWeek
 } from "../../utils/CalendarUtils";
-import { DateType, useDate } from "../../hooks/useDate";
+import { DateType } from "../../hooks/useDate";
+import { DateHeader } from "./DateHeader";
 
 type CalendarHeaderProps = {
-  clickedStates: boolean[];
-  setClickedStates: Dispatch<SetStateAction<boolean[]>>;
+	currentDate: DateType;
+	filtersClicked: boolean[];
+	setFiltersClicked: Dispatch<SetStateAction<boolean[]>>;
 };
-export const CalendarHeader = ({clickedStates,setClickedStates}: CalendarHeaderProps) => {
+export const CalendarHeader = ({
+	currentDate,
+	filtersClicked,
+	setFiltersClicked
+}: CalendarHeaderProps) => {
 	const [hoverStates, setHoverStates] = useState(Array(5).fill(false));
-	
-
-	const currentDate = useDate();
 
 	const [selectedDate, setSelectedDate] = useState<DateType>(currentDate);
 
@@ -36,9 +37,9 @@ export const CalendarHeader = ({clickedStates,setClickedStates}: CalendarHeaderP
 	};
 
 	const handleArrowUpClick = () => {
-		if (clickedStates[0]) {
+		if (filtersClicked[1]) {
 			incrementDay(setSelectedDate);
-		} else if (clickedStates[1]) {
+		} else if (filtersClicked[2]) {
 			incrementWeek(setSelectedDate);
 		} else {
 			incrementMonth(setSelectedDate);
@@ -46,9 +47,9 @@ export const CalendarHeader = ({clickedStates,setClickedStates}: CalendarHeaderP
 	};
 
 	const handleArrowDownClick = () => {
-		if (clickedStates[0]) {
+		if (filtersClicked[1]) {
 			decrementDay(setSelectedDate);
-		} else if (clickedStates[1]) {
+		} else if (filtersClicked[2]) {
 			decrementWeek(setSelectedDate);
 		} else {
 			decrementMonth(setSelectedDate);
@@ -56,21 +57,10 @@ export const CalendarHeader = ({clickedStates,setClickedStates}: CalendarHeaderP
 	};
 
 	const handleFilterClick = (index: number) => {
-		setClickedStates((prevClickedStates) =>
-			prevClickedStates.map((state, i) => (i === index ? !state : false))
+		setFiltersClicked((prevfiltersClicked) =>
+			prevfiltersClicked.map((state, i) => (i === index ? !state : false))
 		);
 	};
-
-  const handleWeekDisplay = () => {
-    const endDate = new Date(selectedDate.year!, selectedDate.month!, selectedDate.day!);
-    endDate.setDate(endDate.getDate() + 6);
-    
-    if (selectedDate.month! === endDate.getMonth()) {
-      return `${monthData[selectedDate.month!].name} ${selectedDate.day} - ${endDate.getDate()}, ${selectedDate.year}`;
-    } else {
-      return `${monthData[selectedDate.month!].name} ${selectedDate.day} - ${monthData[endDate.getMonth()].name} ${endDate.getDate()}, ${selectedDate.year}`;
-    }
-  };
 
 	return (
 		<div style={containerStyle}>
@@ -91,13 +81,10 @@ export const CalendarHeader = ({clickedStates,setClickedStates}: CalendarHeaderP
 					</button>
 				))}
 			</div>
-     {clickedStates[0] ? (
-  <h2 style={dateHeaderStyle}>{`${monthData[selectedDate.month!].name} ${selectedDate.day}, ${selectedDate.year}`}</h2>
-) : clickedStates[1] ? (
-  <h2 style={dateHeaderStyle}>{handleWeekDisplay()}</h2>
-) : (
-  <h2 style={dateHeaderStyle}>{`${monthData[selectedDate.month!].name} ${selectedDate.year}`}</h2>
-)}
+			<DateHeader
+				filtersClicked={filtersClicked}
+				selectedDate={selectedDate}
+			/>
 
 			<div style={buttonGroupStyle}>
 				{["Day", "Week", "Month"].map((label, index) => (
@@ -105,11 +92,11 @@ export const CalendarHeader = ({clickedStates,setClickedStates}: CalendarHeaderP
 						key={label + " Button"}
 						style={filterButtonStyle(
 							hoverStates[index + 2],
-							clickedStates[index]
+							filtersClicked[index + 1]
 						)}
 						onMouseEnter={() => handleMouseHover(index + 2)}
 						onMouseLeave={() => handleMouseHover(index + 2)}
-						onClick={() => handleFilterClick(index)}
+						onClick={() => handleFilterClick(index + 1)}
 					>
 						{label}
 					</button>

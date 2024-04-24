@@ -2,9 +2,13 @@ import { useState } from "react";
 import { CalendarHeader } from "../components/content/CalendarHeader";
 import { CalendarContent } from "../components/content/CalendarContent";
 import { CalendarNavbar } from "../components/utils/CalendarNavbar";
+import { useDate } from "../hooks/useDate";
 
 const About = () => {
-	const [clickedStates, setClickedStates] = useState(Array(3).fill(false));
+	const [filtersClicked, setFiltersClicked] = useState(Array(4).fill(false));
+
+	const currentDate = useDate();
+
 	return (
 		<html>
 			<head>
@@ -19,7 +23,7 @@ const About = () => {
 				<link rel="icon" href="/assets/favicon.ico" />
 			</head>
 			<body>
-				<CalendarNavbar />
+				<CalendarNavbar setFiltersClicked={setFiltersClicked} />
 				<main
 					style={{
 						display: "flex",
@@ -28,8 +32,12 @@ const About = () => {
 						alignItems: "center"
 					}}
 				>
-					<CalendarHeader  clickedStates={clickedStates} setClickedStates={setClickedStates} />
-					<CalendarContent clickedStates={clickedStates} />
+					<CalendarHeader
+						filtersClicked={filtersClicked}
+						setFiltersClicked={setFiltersClicked}
+						currentDate={currentDate}
+					/>
+					<CalendarContent filtersClicked={filtersClicked} />
 				</main>
 			</body>
 		</html>
