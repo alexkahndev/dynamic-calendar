@@ -8,7 +8,7 @@ export const CalendarFilterButton = ({ setIsModalOpen }: FilterButtonProps) => (
 	<button
 		onClick={() => setIsModalOpen((prevState) => !prevState)}
 		style={{
-			padding: "0.5rem 1rem",
+			padding: "0.25rem 1rem",
 			borderRadius: "4px",
 			border: "none",
 			backgroundColor: "#007BFF",
