@@ -1,33 +1,45 @@
-import { ChangeEvent, Dispatch, SetStateAction } from "react";
+import { ChangeEvent, Dispatch, SetStateAction, useState } from "react";
 
 type FilterModalProps = {
-	dateRange: { start: string; end: string };
-	handleDateChange: (e: ChangeEvent<HTMLInputElement>) => void;
 	isModalOpen: boolean;
-	setIsModalOpen: Dispatch<React.SetStateAction<boolean>>;
+	setIsModalOpen: Dispatch<SetStateAction<boolean>>;
 	setFiltersClicked: Dispatch<SetStateAction<boolean[]>>;
+	setDaysInRange: Dispatch<SetStateAction<number>>;
+	dateRange: { start: string; end: string };
+	setDateRange: Dispatch<SetStateAction<{ start: string; end: string }>>;
 };
 
 export const FilterModal = ({
-	dateRange,
-	handleDateChange,
 	isModalOpen,
 	setIsModalOpen,
-	setFiltersClicked
+	setFiltersClicked,
+	setDaysInRange,
+	dateRange,
+	setDateRange
 }: FilterModalProps) => {
-	if (!isModalOpen) {
-		return null;
-	}
+	if (!isModalOpen) return null;
 
-	const closeModal = () => {
-		setIsModalOpen(false);
-	};
+	const closeModal = () => setIsModalOpen(false);
 
-	const handleFilterSubmit = (index: number) => {
-		setFiltersClicked((prevfiltersClicked) =>
-			prevfiltersClicked.map((state, i) => (i === index ? !state : false))
+	const handleFilterSubmit = () => {
+		const { start, end } = dateRange;
+		const startDate = new Date(start);
+		const endDate = new Date(end);
+
+		if (endDate < startDate)
+			return alert("End date cannot be before start date.");
+		if (!start && !end) return alert("Please select a start and end date.");
+		if (!start) return alert("Please select a start date.");
+		if (!end) return alert("Please select an end date.");
+
+		const timeDifference = Math.abs(
+			endDate.getTime() - startDate.getTime()
 		);
-		setIsModalOpen(false);
+		const daysInRange = Math.ceil(timeDifference / (1000 * 3600 * 24));
+
+		setFiltersClicked([true, false, false, false]);
+		setDaysInRange(daysInRange);
+		closeModal();
 	};
 
 	return (
@@ -64,38 +76,43 @@ export const FilterModal = ({
 						width: "100%"
 					}}
 				>
-					<label
-						style={{
-							display: "flex",
-							justifyContent: "space-between",
-							width: "100%",
-							marginBottom: "1rem"
-						}}
-					>
-						<span>Start Date:</span>
-						<input
-							type="date"
-							name="start"
-							value={dateRange.start}
-							onChange={handleDateChange}
-						/>
-					</label>
-					<label
-						style={{
-							display: "flex",
-							justifyContent: "space-between",
-							width: "100%",
-							marginBottom: "1rem"
-						}}
-					>
-						<span>End Date:</span>
-						<input
-							type="date"
-							name="end"
-							value={dateRange.end}
-							onChange={handleDateChange}
-						/>
-					</label>
+					{["Start", "End"].map((label) => (
+						<label
+							key={label}
+							style={{
+								display: "flex",
+								justifyContent: "space-between",
+								width: "100%",
+								marginBottom: "1rem"
+							}}
+						>
+							<span>{label} Date:</span>
+							<input
+								type="date"
+								name={label.toLowerCase()}
+								value={
+									dateRange[
+										label.toLowerCase() as keyof typeof dateRange
+									]
+								}
+								placeholder={
+									dateRange[
+										label.toLowerCase() as keyof typeof dateRange
+									]
+								}
+								onChange={(
+									event: ChangeEvent<HTMLInputElement>
+								) =>
+									setDateRange((prev) => ({
+										...prev,
+										[label.toLowerCase() as keyof typeof dateRange]:
+											event.target.value
+									}))
+								}
+							/>
+						</label>
+					))}
+
 					<div
 						style={{
 							display: "flex",
@@ -118,7 +135,7 @@ export const FilterModal = ({
 						</button>
 						<button
 							type="button"
-							onClick={() => handleFilterSubmit(0)}
+							onClick={handleFilterSubmit}
 							style={{
 								padding: "0.5rem 1rem",
 								borderRadius: "4px",

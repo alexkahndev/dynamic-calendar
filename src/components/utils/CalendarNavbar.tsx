@@ -6,27 +6,24 @@ import { CalendarSubmitButton } from "./CalendarSubmitButton";
 import { CalendarFilterButton } from "./CalendarFilterButton";
 import { CalendarProfileIcon } from "./CalendarProfileIcon";
 
-type DateRange = {
+export type DateRange = {
 	start: string;
 	end: string;
 };
 
 type CalendarNavbarProps = {
 	setFiltersClicked: Dispatch<SetStateAction<boolean[]>>;
+	daysInRange: number;
+	setDaysInRange: Dispatch<SetStateAction<number>>;
 };
 
-export const CalendarNavbar = ({ setFiltersClicked }: CalendarNavbarProps) => {
+export const CalendarNavbar = ({
+	setFiltersClicked,
+	setDaysInRange
+}: CalendarNavbarProps) => {
 	const [searchTerm, setSearchTerm] = useState<string>("");
-	const [dateRange, setDateRange] = useState<DateRange>({
-		start: "",
-		end: ""
-	});
 	const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
-
-	const handleDateChange = (e: ChangeEvent<HTMLInputElement>) => {
-		setDateRange({ ...dateRange, [e.target.name]: e.target.value });
-	};
-
+	const [ dateRange, setDateRange ] = useState<DateRange>({ start: "", end: "" });
 	return (
 		<header>
 			<nav
@@ -62,11 +59,12 @@ export const CalendarNavbar = ({ setFiltersClicked }: CalendarNavbarProps) => {
 				<CalendarProfileIcon />
 			</nav>
 			<FilterModal
-				dateRange={dateRange}
-				handleDateChange={handleDateChange}
 				isModalOpen={isModalOpen}
 				setIsModalOpen={setIsModalOpen}
 				setFiltersClicked={setFiltersClicked}
+				setDaysInRange={setDaysInRange}
+				dateRange={dateRange}
+				setDateRange={setDateRange}
 			/>
 		</header>
 	);
