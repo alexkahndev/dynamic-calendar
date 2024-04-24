@@ -13,20 +13,20 @@ export type DateRange = {
 
 type CalendarNavbarProps = {
 	setFiltersClicked: Dispatch<SetStateAction<boolean[]>>;
-	daysInRange: number;
-	setDaysInRange: Dispatch<SetStateAction<number>>;
+	dateRange: DateRange;
+	setDateRange: Dispatch<SetStateAction<DateRange>>;
+	setDaysInCurrentRange: Dispatch<SetStateAction<number>>;
 };
 
 export const CalendarNavbar = ({
 	setFiltersClicked,
-	setDaysInRange
+	setDaysInCurrentRange,
+	dateRange,
+	setDateRange
 }: CalendarNavbarProps) => {
 	const [searchTerm, setSearchTerm] = useState<string>("");
 	const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
-	const [dateRange, setDateRange] = useState<DateRange>({
-		start: "",
-		end: ""
-	});
+
 	return (
 		<header>
 			<nav
@@ -65,7 +65,7 @@ export const CalendarNavbar = ({
 				isModalOpen={isModalOpen}
 				setIsModalOpen={setIsModalOpen}
 				setFiltersClicked={setFiltersClicked}
-				setDaysInRange={setDaysInRange}
+				setDaysInRange={setDaysInCurrentRange}
 				dateRange={dateRange}
 				setDateRange={setDateRange}
 			/>

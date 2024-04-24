@@ -8,8 +8,11 @@ const About = () => {
 
 	const currentDate = useDate();
 
-	const [daysInRange, setDaysInRange] = useState<number>(0);
-
+	const [daysInCurrentRange, setDaysInCurrentRange] = useState<number>(0);
+	const [dateRange, setDateRange] = useState<DateRange>({
+		start: "",
+		end: ""
+	});
 	return (
 		<html>
 			<head>
@@ -26,8 +29,9 @@ const About = () => {
 			<body>
 				<CalendarNavbar
 					setFiltersClicked={setFiltersClicked}
-					daysInRange={daysInRange}
-					setDaysInRange={setDaysInRange}
+					setDaysInCurrentRange={setDaysInCurrentRange}
+					dateRange={dateRange}
+					setDateRange={setDateRange}
 				/>
 				<main
 					style={{
@@ -42,7 +46,8 @@ const About = () => {
 						filtersClicked={filtersClicked}
 						setFiltersClicked={setFiltersClicked}
 						currentDate={currentDate}
-						daysInRange={daysInRange}
+						daysInCurrentRange={daysInCurrentRange}
+						dateRange={dateRange}
 					/>
 				</main>
 			</body>

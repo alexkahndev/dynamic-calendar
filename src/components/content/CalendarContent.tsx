@@ -1,20 +1,23 @@
+import { DateRange } from "../utils/CalendarNavbar";
+
 type CalendarContentProps = {
 	filtersClicked: boolean[];
-	daysInRange: number;
+	dateRange: DateRange;
+	daysInCurrentRange: number;
 };
 
 const daysOfWeek = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
 export const CalendarContent = ({
 	filtersClicked,
-	daysInRange
+	dateRange,
+	daysInCurrentRange
 }: CalendarContentProps) => {
-	
-	const getCalendarSettings = (filtersClicked: boolean[]) => {
+	const getCalendarSettings = () => {
 		let squares, columns, rows;
 
 		if (filtersClicked[0]) {
-			const length = Math.ceil(daysInRange / 7) * 7;
+			const length = Math.ceil(daysInCurrentRange / 7) * 7;
 			squares = Array.from({ length }, (_, i) => i + 1);
 			columns = "repeat(7, 1fr)";
 			rows = "1fr";
@@ -36,10 +39,9 @@ export const CalendarContent = ({
 		return { squares, columns, rows };
 	};
 
-	const { squares, columns, rows } = getCalendarSettings(
-		filtersClicked,
-	);
+	const { squares, columns, rows } = getCalendarSettings();
 
+	
 	return (
 		<div style={{ height: "100%", width: "100%" }}>
 			<div
@@ -57,9 +59,7 @@ export const CalendarContent = ({
 				}}
 			>
 				{filtersClicked[1] ? (
-					<div style={{ border: "2px solid black" }}>
-						test-number
-					</div>
+					<div style={{ border: "2px solid black" }}>test-number</div>
 				) : (
 					daysOfWeek.map((day, index) => (
 						<div

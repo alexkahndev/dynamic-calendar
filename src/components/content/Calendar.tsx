@@ -1,25 +1,33 @@
-import { Dispatch, SetStateAction, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { CalendarContent } from "./CalendarContent";
 import { CalendarHeader } from "./CalendarHeader";
 import { DateType } from "../../hooks/useDate";
+import { DateRange } from "../utils/CalendarNavbar";
 
 type CalendarProps = {
 	filtersClicked: boolean[];
 	setFiltersClicked: Dispatch<SetStateAction<boolean[]>>;
 	currentDate: DateType;
-	daysInRange: number;
+	daysInCurrentRange: number;
+	dateRange: DateRange;
 };
 export const Calendar = ({
 	filtersClicked,
 	setFiltersClicked,
 	currentDate,
-	daysInRange
+	daysInCurrentRange,
+	dateRange
 }: CalendarProps) => {
 	const [selectedDate, setSelectedDate] = useState<DateType>({
 		year: currentDate.year,
 		month: currentDate.month,
 		day: currentDate.day
 	});
+
+	useEffect(()=>{
+
+		console.log("Calendar.tsx: start: " + dateRange.start + " end: " + dateRange.end)
+	},[dateRange])
 
 	return (
 		<div
@@ -40,12 +48,13 @@ export const Calendar = ({
 				setFiltersClicked={setFiltersClicked}
 				selectedDate={selectedDate}
 				setSelectedDate={setSelectedDate}
-				
 			/>
 			<CalendarContent
 				filtersClicked={filtersClicked}
-				daysInRange={daysInRange}
+				daysInCurrentRange={daysInCurrentRange}
+				dateRange={dateRange}
 			/>
+			
 		</div>
 	);
 };
