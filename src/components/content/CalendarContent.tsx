@@ -9,10 +9,8 @@ export const CalendarContent = ({
 	filtersClicked,
 	daysInRange
 }: CalendarContentProps) => {
-	const today = new Date();
-	const currentDay = daysOfWeek[today.getDay()];
-
-	const getCalendarSettings = (filtersClicked: boolean[], today: Date) => {
+	
+	const getCalendarSettings = (filtersClicked: boolean[]) => {
 		let squares, columns, rows;
 
 		if (filtersClicked[0]) {
@@ -21,7 +19,7 @@ export const CalendarContent = ({
 			columns = "repeat(7, 1fr)";
 			rows = "1fr";
 		} else if (filtersClicked[1]) {
-			squares = Array(1).fill(today.getDate());
+			squares = Array(1).fill(1);
 			columns = "1fr";
 			rows = "1fr";
 		} else if (filtersClicked[2]) {
@@ -40,11 +38,10 @@ export const CalendarContent = ({
 
 	const { squares, columns, rows } = getCalendarSettings(
 		filtersClicked,
-		today
 	);
 
 	return (
-		<div style={{ height: "100%", width: "95%" }}>
+		<div style={{ height: "100%", width: "100%" }}>
 			<div
 				style={{
 					display: "grid",
@@ -54,27 +51,21 @@ export const CalendarContent = ({
 					gap: "1px",
 					height: "10%",
 					maxHeight: "50px",
-					width: "100%"
+					width: "100%",
+					marginTop: "0.1rem",
+					marginBottom: "0.1rem"
 				}}
 			>
 				{filtersClicked[1] ? (
-					<div
-						style={{
-							backgroundColor: "#ECF0F1",
-							borderColor: "black",
-							borderStyle: "solid"
-						}}
-					>
-						{currentDay}
+					<div style={{ border: "2px solid black" }}>
+						test-number
 					</div>
 				) : (
 					daysOfWeek.map((day, index) => (
 						<div
 							key={index}
 							style={{
-								backgroundColor: "#ECF0F1",
-								borderColor: "black",
-								borderStyle: "solid"
+								border: "2px solid black"
 							}}
 						>
 							{day}
@@ -96,9 +87,7 @@ export const CalendarContent = ({
 					<div
 						key={index}
 						style={{
-							backgroundColor: "#ECF0F1",
-							borderColor: "black",
-							borderStyle: "solid",
+							border: "2px solid black",
 							minHeight: "100px"
 						}}
 					>

@@ -1,5 +1,5 @@
 export const CalendarLogo = () => (
-	<a href="/" >
+	<a href="/">
 		<img
 			src="/assets/svg/brand_logo.svg"
 			alt="Awesome.Social Logo"

@@ -23,7 +23,10 @@ export const CalendarNavbar = ({
 }: CalendarNavbarProps) => {
 	const [searchTerm, setSearchTerm] = useState<string>("");
 	const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
-	const [ dateRange, setDateRange ] = useState<DateRange>({ start: "", end: "" });
+	const [dateRange, setDateRange] = useState<DateRange>({
+		start: "",
+		end: ""
+	});
 	return (
 		<header>
 			<nav

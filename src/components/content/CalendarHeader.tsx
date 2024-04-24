@@ -17,18 +17,18 @@ import { DateType } from "../../hooks/useDate";
 import { DateHeader } from "./DateHeader";
 
 type CalendarHeaderProps = {
-	currentDate: DateType;
 	filtersClicked: boolean[];
 	setFiltersClicked: Dispatch<SetStateAction<boolean[]>>;
+	selectedDate: DateType;
+	setSelectedDate: Dispatch<SetStateAction<DateType>>;
 };
 export const CalendarHeader = ({
-	currentDate,
 	filtersClicked,
-	setFiltersClicked
+	setFiltersClicked,
+	selectedDate,
+	setSelectedDate
 }: CalendarHeaderProps) => {
 	const [hoverStates, setHoverStates] = useState(Array(5).fill(false));
-
-	const [selectedDate, setSelectedDate] = useState<DateType>(currentDate);
 
 	const handleMouseHover = (index: number) => {
 		setHoverStates((prevHoverStates) =>

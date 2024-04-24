@@ -15,6 +15,12 @@ export const Calendar = ({
 	currentDate,
 	daysInRange
 }: CalendarProps) => {
+	const [selectedDate, setSelectedDate] = useState<DateType>({
+		year: currentDate.year,
+		month: currentDate.month,
+		day: currentDate.day
+	});
+
 	return (
 		<div
 			style={{
@@ -22,14 +28,19 @@ export const Calendar = ({
 				flexDirection: "column",
 				justifyContent: "center",
 				alignItems: "center",
-				width: "100%",
-				height: "100%"
+				width: "95%",
+				height: "95%",
+				backgroundColor: "white",
+				border: "2px solid black",
+				padding: "2px"
 			}}
 		>
 			<CalendarHeader
 				filtersClicked={filtersClicked}
 				setFiltersClicked={setFiltersClicked}
-				currentDate={currentDate}
+				selectedDate={selectedDate}
+				setSelectedDate={setSelectedDate}
+				
 			/>
 			<CalendarContent
 				filtersClicked={filtersClicked}
